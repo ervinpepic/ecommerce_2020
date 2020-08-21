@@ -1,18 +1,19 @@
 # authentication imports
-from django.contrib.auth import authenticate, login
+from django.contrib.auth import authenticate, login, get_user_model
 
 from django.http import HttpResponse
 from django.shortcuts import render, redirect
 
 
 # my custom modules import
-from .forms import ContactForm, LoginForm
+from .forms import ContactForm, LoginForm, RegisterForm
 
 
 def home_page(request):
     context = {
         "title": "Hello World!",
-        "content": "Welcome to the home page."
+        "content": "Welcome to the home page.",
+        "premium_content": "You're subscribed user"
     }
     return render(request, 'home_page.html', context)
 
@@ -58,14 +59,26 @@ def login_page(request):
         if login_user is not None:
             login(request, login_user)
             # context['form'] = LoginForm()
-            return redirect("/login")
+            return redirect("/")
         else:
             print("Error")
 
     return render(request, "auth/login.html", context)
 
-# def register_page(request):
-#     register_form = RegisterForm(request.POST or None)
-#     if register_form.is_valid():
-#         print(register_form.cleaned_data)
-#     return render(request, "auth/register.html", {})
+
+User = get_user_model()
+
+
+def register_page(request):
+    register_form = RegisterForm(request.POST or None)
+    context = {
+        "form": register_form
+    }
+    if register_form.is_valid():
+        print(register_form.cleaned_data)
+        username = register_form.cleaned_data.get("username")
+        email = register_form.cleaned_data.get("email")
+        password = register_form.cleaned_data.get("password")
+
+        register_user = User.objets.create_user(username, email, password)
+    return render(request, "auth/register.html", context)
