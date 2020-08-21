@@ -1,3 +1,4 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="en">
   <head>
@@ -15,6 +16,7 @@
       integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm"
       crossorigin="anonymous"
     />
+    <link rel="stylesheet" href="{% static 'css/main.css' %}">
   </head>
   <body>
     <h1>{{ title }}</h1>
@@ -23,6 +25,7 @@
     <div class="container">
       <div class="row">
         <div class="col">
+          <img src="{% static 'img/iphone-11jpeg.jpeg' %}" class="img-fluid">
           <p class="lead">{{ content }}</p>
         </div>
       </div>
